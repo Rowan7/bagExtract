@@ -28,11 +28,6 @@ cd ~-
 
 cd $A_TARGET_BAG_DIR
 
-#FOR TOM <<================ If you want a text file for each missing attribute then use the code below,
-#for item in ${attributeArray[@]}; do    # For attribute in attributeArray, create or overwrite .txt file
-    #>missing${item}.txt
-#done
-    #>missingDateCreated.txt # Have to do this one seperately because attributeArray is used for other functions in which dateCreated can't be part of.
 
 > missing.txt # Otherwise, just make 1 error file to hold all the missing information.
 
@@ -54,8 +49,8 @@ for bagFile in ./*bag; do    # For each bagFile in target directory
     done
     epochTime=` date -r ${bagFile##*/} "+%s"`                                                # After adding the rest of the key value pairs, it adds the date it was created    
     epochToUTC=` date --utc --date "1970-01-01 $epochTime seconds" +"%Y-%m-%d-%H-%M-%S"`     # I think this has to be hardcoded at the end because you can't hold all the dates in an array.
-    keywordCount=$(python3 $A_PROGRAM_HOME/addKeyValue.py ./${bagFile##*/} "dateCreated" $epochToUTC)      # FOR TOM <<===== I don't think this can have an error flag because it's impossible for a file
-done                                                                                                       # to not have a date created, it will ALWAYS find it
+    keywordCount=$(python3 $A_PROGRAM_HOME/addKeyValue.py ./${bagFile##*/} "dateCreated" $epochToUTC)      
+done                                                                                                      
 
 if [ ! -s $errorFile ]; then # if error file isn't empty.
     echo "WARNING: $errorFile has been appended to."

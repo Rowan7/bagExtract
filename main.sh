@@ -21,15 +21,20 @@ r_ROUTE_ROOT=$2
 cd $r_ROUTE_ROOT
 A_ROUTE_ROOT=`pwd` # $2 can be a relative path, convert to absolute path for future use.
 cd ~-
+$A_PROGRAM_HOME/jsonPopulate.sh $A_TARGET_BAG_DIR
 
-./jsonPopulate.sh $A_TARGET_BAG_DIR
+
 cd $A_TARGET_BAG_DIR
 
 for jsonFile in ./*json; do
-    if [ -f ${jsonFile%.*}.bag ]; then
-        # is ${jsonFile%.*}.bag in missing.txt
-        echo "bagFile jsonFile Pair Found: $jsonFile"
-        python3 $A_PROGRAM_HOME/getRoute.py ./$jsonFile $A_ROUTE_ROOT  ### -p ROUTE_DIR 
+    bagName=${jsonFile%.*}.bag
+    bagFile=$(basename ${bagName})
+    if [ -f ${bagPathName} ]; then
+
+       if ! grep -iq "$bagFile" "$errorFile" ; then
+            echo "Complete bagFile/jsonFile Pair Found: $bagFile $jsonFile"
+            python3 $A_PROGRAM_HOME/getRoute.py ./$jsonFile $A_ROUTE_ROOT  ### -p ROUTE_DIR
+        fi
     fi
     # PATH IS MADE
     # USE NETWORK INPUT TO EXTRACT THEM

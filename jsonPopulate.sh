@@ -15,7 +15,7 @@
 #=== Initial Variables and arrays # Used for clearer navigation.
 attributeArray=("Crop" "Location" "Format") # Array of all attributes collected in each bag file Except from dateCreated as this doesn't involve keywords
 
-arrayCrop=("Carrot" "Celery" "Springwheat")
+arrayCrop=("Celery" "Springwheat" "Wheat" "Barley" "Springbean" "Sugarbeet" "Lettuce" "OilseedRape" "Rape" "Onion" "Brocolli" "Carrot" "Choy" "Fennel" "Lavender" "Leek" "Spinach" "Cabbage")
 arrayLocation=("Pearce" "Lincoln")
 arrayFormat=("_RGB_" "_RGBD_" "_IRD_" "_RGBIRD_")
 

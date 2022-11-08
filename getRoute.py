@@ -66,8 +66,11 @@ def main():
         else:
             print ("Path Created: " + MASTER_PATH)
 
+        print ("MASTER_PATH: " + A_ROUTE_ROOT + "/" + MASTER_PATH)
+
+
     except KeyError as e:
-        print("WARNING: Cannot create path. Missing attributes. Err: {}".format(e)) 
+        print("ERROR WARNING: Cannot create path. Missing attributes. Err: {}".format(e)) 
     except Exception as e: 
         raise RuntimeError("FATAL ERROR: Cannot Make MASTER PATH. Err: {}".format(e))
 

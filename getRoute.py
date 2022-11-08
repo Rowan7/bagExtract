@@ -18,7 +18,12 @@ import json
 attributeArray = ["Crop", "Location", "Format"]
 valueArray = []
 
+
+
+
+
 def main():
+
     try:
         str; jsonPathName = sys.argv[1]
         str; A_PROGRAM_HOME = os.getcwd()

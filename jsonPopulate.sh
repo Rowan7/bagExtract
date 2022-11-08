@@ -37,11 +37,8 @@ A_TARGET_BAG_DIR=$(realpath ${r_TARGET_BAG_DIR})
 errorPath="${A_TARGET_BAG_DIR}/${errorFile}"   # Write to the relevent error file
 > $errorPath
 
-echo "error file path: ${errorPath} a target bag dir: ${A_TARGET_BAG_DIR}"
-# > $A_TARGET_BAG_DIR/missing.txt # Otherwise, just make 1 error file to hold all the missing information.
-
 for bagFile in ${A_TARGET_BAG_DIR}/*bag; do    # For each bagFile in target directory
-    echo "Bag file: ${bagFile} "
+    #echo "Bag file: ${bagFile} "
     for attribute in ${attributeArray[@]}; do # Go through each attribute in attribute array, which holds arrays of arrays
         currentArray=array$attribute[@]
         found=0     # Missing Flag
@@ -54,24 +51,18 @@ for bagFile in ${A_TARGET_BAG_DIR}/*bag; do    # For each bagFile in target dire
             fi
         done
         if [ $found -eq 0 ];then # If the flag is still up after going through an array:
-
         echo "Missing $attribute: ${bagFile##*/}" >> "$errorPath"
         fi
     done
-    epochTime=` date -r ${bagFile##*/} "+%s"`                                                # After adding the rest of the key value pairs, it adds the date it was created    
+
+    epochTime=` date -r $A_TARGET_BAG_DIR/${bagFile##*/} "+%s"`                                                # After adding the rest of the key value pairs, it adds the date it was created    
     epochToUTC=` date --utc --date "1970-01-01 $epochTime seconds" +"%Y-%m-%d-%H-%M-%S"`     # I think this has to be hardcoded at the end because you can't hold all the dates in an array.
 
-    bagFileName=${bagFile##*/}    
-    echo "Bagfile name into addKeyValue: ${bagFileName} "
-    keywordCount=$(python3 $A_PROGRAM_HOME/addKeyValue.py ${bagFileName} "dateCreated" $epochToUTC)      
+    bagFileName=${bagFile##*/}   
+    keywordCount=$(python3 $A_PROGRAM_HOME/addKeyValue.py $A_TARGET_BAG_DIR/${bagFileName} "dateCreated" $epochToUTC)      
 done
 
 
-echo "big test" >> "$errorPath"
-echo $errorPath
-echo $A_TARGET_BAG_DIR
 if [ -s $A_TARGET_BAG_DIR/missing.txt ]; then # if -something in the file a.k.a empty
-    echo "WARNING: $errorPath has been appended to."
-else
-    echo "Error File remains empty"
+    echo "WARNING: $errorFile has been appended to."
 fi

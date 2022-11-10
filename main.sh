@@ -21,56 +21,48 @@ r_ROUTE_ROOT=$2
 cd $r_ROUTE_ROOT
 A_ROUTE_ROOT=`pwd` # $2 can be a relative path, convert to absolute path for future use.
 cd ~-
-errorPath=$A_TARGET_BAG_DIR/missing.txt
-errorFile=missing.txt
-TIMEOUT=1m # Max BagFile Extraction Time Limit
+errorPath=$A_TARGET_BAG_DIR/failed.txt
+errorFile=failed.txt
+TIMEOUT=5m # Max BagFile Extraction Time Limit
 SUCCESS=0
+FAILURE=1
 TIMEDOUT=125
-
 
 # Populate with .json files and add key values for each detected attribute.
 $A_PROGRAM_HOME/jsonPopulate.sh $A_TARGET_BAG_DIR
-
-
 
 # go through each .jsonFile .bagFile pair and if it's not missing any attributes, create it a path to be stored.
 for jsonPathName in $A_TARGET_BAG_DIR/*json; do
     bagPathName=${jsonPathName%.*}.bag
     bagFile=$(basename ${bagPathName})
     jsonFile=$(basename ${jsonPathName})
-
     if [ -f $A_TARGET_BAG_DIR/$bagFile ]; then
-
         if  $(! grep -q $bagFile $errorPath)  ; then
             echo "Complete bagFile/jsonFile Pair Found: $bagFile $jsonFile"
-            #python3 $A_PROGRAM_HOME/getRoute.py $jsonPathName $A_ROUTE_ROOT
             getRouteReturn=$(python3 $A_PROGRAM_HOME/getRoute.py $jsonPathName $A_ROUTE_ROOT)
-
-            #$(find ${A_TARGET_BAG_DIR} -type f \( -iname "*$value*" -a -name "${bagFile##*/}" \) -exec python3 $A_PROGRAM_HOME/addKeyValue.py /{} $attribute ${value//_/} \; | wc -l)
-            # CHECK IF OUTPUT DOENST CONTAIN AN ERROR
-
             if [[ $getRouteReturn == *"ERROR"* ]]; then
                 echo "Error found in getRoute, skipping .bag Extraction"
             else
-                # PATH IS MADE
-                # EXTRACTION TIME
                 echo "Formatting Master Path"
                 MASTER_PATH=${getRouteReturn##*MASTER_PATH: }
-                echo $MASTER_PATH
-
-                #<TOM CODE>
-                timeout --foreground -k 10 ${TIMEOUT} /home/Garford_RoboEye/build/projects/networkInput/./networkInput -b ${bagFile}   -r ${MASTER_PATH}
+                echo " Bag file path: ${bagPathName} save path: ${MASTER_PATH}"
+                timeout --foreground -k 10 ${TIMEOUT} /home/Garford_RoboEye/build/projects/networkInput/./networkInput -b ${bagPathName} -x ${MASTER_PATH}
                 if [ "$?" -eq "$SUCCESS" ]; then
                     echo "STATUS: Processing bagFile: ${bagFile} SUCCESS"
-                elif [ "$?" -eq "$TIMEDOUT" ]; then 
+                elif [ "$?" -eq "$FAILURE" ]; then 
+                    echo "ERROR: Processing bagFile: ${bagFile} FAILED! OUTPUT: $?"
+                    echo "Failed to Extract: ${bagFile##*/}" >> "$errorPath" # Add to Error File
+                else 
                     echo "STATUS: Processing bagFile: ${bagFile} TIMED OUT (Timeout Limit Reached: ${TIMEOUT} Minutes)"
-                else
-                    echo "ERROR: Processsing bagFile: ${bagFile} FAILED! OUTPUT: $?"
+                    echo "Failed to Extract: ${bagFile##*/}, Timed Out" >> "$errorPath" # ADD TO FAILED.TXT TIMEOUT
                 fi
-                #</TOM CODE>
             fi
         else
             echo "$bagFile found in $errorFile, skipping path creation."
         fi
+    else
+        echo "$jsonFile found without matching bagFile, skipping skipping path creation."
     fi
 done
+echo "FILE EXTRACTION COMPLETE"
+

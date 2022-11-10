@@ -19,9 +19,6 @@ attributeArray = ["Crop", "Location", "Format"]
 valueArray = []
 
 
-
-
-
 def main():
 
     try:
@@ -56,8 +53,9 @@ def main():
     ## If nothing was caught
         print ("Successfully found all Key Values")
         str; MASTER_PATH = ""
-        MASTER_PATH ="/".join(valueArray)
-        
+        MASTER_PATH ="/".join(valueArray)                                                               
+        MASTER_PATH=MASTER_PATH+"/"+jsonBaseName        # Fixed bug, now adds the .bagName as a directory too
+
         try:
             os.chdir(A_ROUTE_ROOT)
             os.makedirs(MASTER_PATH)

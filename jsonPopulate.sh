@@ -15,12 +15,16 @@
 #=== Initial Variables and arrays # Used for clearer navigation.
 attributeArray=("Crop" "Location" "Format") # Array of all attributes collected in each bag file Except from dateCreated as this doesn't involve keywords
 
-arrayCrop=("Celery" "Springwheat" "Wheat" "Barley" "Springbean" "Sugarbeet" "Lettuce" "OilseedRape" "Rape" "Onion" "Brocolli" "Carrot" "Choy" "Fennel" "Lavender" "Leek" "Spinach" "Cabbage")
-arrayLocation=("Pearce" "Lincoln")
+arrayCrop=("Beet" "Celery" "Springwheat" "Wheat" \ 
+"Barley" "Springbean" "Sugarbeet" "Lettuce" "Spinach" \
+"OilseedRape" "Rape" "Onion" "Brocolli" "Carrot" \ 
+"Choy" "Fennel" "Lavender" "Leek" "Spinach" "Cabbage")
+
+arrayLocation=("Pearce" "Lincoln" "SantaMaria" "Engine_Farm" "Newfield_Papley")
 arrayFormat=("_RGB_" "_RGBD_" "_IRD_" "_RGBIRD_")
 
 A_PROGRAM_HOME=`pwd`
-errorFile="missing.txt"
+errorFile="failed.txt"
 
 r_TARGET_BAG_DIR=$1
 
@@ -63,6 +67,6 @@ for bagFile in ${A_TARGET_BAG_DIR}/*bag; do    # For each bagFile in target dire
 done
 
 
-if [ -s $A_TARGET_BAG_DIR/missing.txt ]; then # if -something in the file a.k.a empty
+if [ -s $errorPath ]; then # if -something in the file a.k.a empty
     echo "WARNING: $errorFile has been appended to."
 fi

@@ -56,10 +56,9 @@ for jsonPathName in $A_TARGET_BAG_DIR/*json; do
                 # EXTRACTION TIME
                 echo "Formatting Master Path"
                 MASTER_PATH=${getRouteReturn##*MASTER_PATH: }
-                echo $MASTER_PATH
 
                 #<TOM CODE>
-                timeout --foreground -k 10 ${TIMEOUT} /home/Garford_RoboEye/build/projects/networkInput/./networkInput -b ${bagFile}   -r ${MASTER_PATH}
+                timeout --foreground -k 10 ${TIMEOUT} /home/Garford_RoboEye/build/projects/networkInput/./networkInput -b ${bagPathName}   -r ${MASTER_PATH}
                 if [ "$?" -eq "$SUCCESS" ]; then
                     echo "STATUS: Processing bagFile: ${bagFile} SUCCESS"
                 elif [ "$?" -eq "$TIMEDOUT" ]; then 

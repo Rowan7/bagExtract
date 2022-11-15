@@ -10,7 +10,7 @@
 # USAGE HELP:          ./jsonPopulate where(bagDirectory)
 # USAGE EXAMPLE:       ./jsonPopulate ../bags
 #
-
+#
 
 #=== Initial Variables and arrays # Used for clearer navigation.
 attributeArray=("Crop" "Location" "Format") # Array of all attributes collected in each bag file Except from dateCreated as this doesn't involve keywords
@@ -18,9 +18,21 @@ attributeArray=("Crop" "Location" "Format") # Array of all attributes collected 
 arrayCrop=("Beet" "Celery" "Springwheat" "Wheat" \ 
 "Barley" "Springbean" "Sugarbeet" "Lettuce" "Spinach" \
 "OilseedRape" "Rape" "Onion" "Brocolli" "Carrot" \ 
+"Chicory" "Springbeans" \
+"Spring_Greens" \
 "Choy" "Fennel" "Lavender" "Leek" "Spinach" "Cabbage")
 
-arrayLocation=("Pearce" "Lincoln" "SantaMaria" "Engine_Farm" "Newfield_Papley")
+arrayLocation=("Pearce" "Lincoln" "SantaMaria" \
+                "Papley" "Benefield" \
+                "Tansor" "Culverthorpe" \ 
+                "Maxey" \
+                "Ely" \
+
+                "Boston" \
+                "Lutton" \
+                "Oundle" \
+                "Frognall" "Valensole" )
+
 arrayFormat=("_RGB_" "_RGBD_" "_IRD_" "_RGBIRD_")
 
 A_PROGRAM_HOME=`pwd`
@@ -28,13 +40,6 @@ errorFile="failed.txt"
 
 r_TARGET_BAG_DIR=$1
 
-
-
-# cd $r_TARGET_BAG_DIR
-# A_TARGET_BAG_DIR=`pwd` # $1 can be a relative path, convert to absolute path for future use.
-# cd ~-
-
-# cd $A_TARGET_BAG_DIR
 
 A_TARGET_BAG_DIR=$(realpath ${r_TARGET_BAG_DIR})
 

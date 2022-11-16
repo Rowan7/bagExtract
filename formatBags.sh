@@ -91,4 +91,4 @@ done
 echo "Bag Formatting Complete"
 }
 
-main()
+main

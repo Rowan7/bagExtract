@@ -40,9 +40,10 @@ declare -A keywordCorrection=( # Declare an associative array containing known k
     ["pearce_"]="frognall_" \
     ["peasgood_"]="frognall_" \
     ["gs_"]="ely_" \
-    ["leak_"]="leek_" \
     ["beet_"]="sugarbeet_" \
+    ["leak_"]="leek_" \
     ["none_none_auto_none_"]="wheat_papley_" \
+    
 
 )
 
@@ -57,35 +58,54 @@ for keyword in ${!keywordCorrection[@]}; do
 
   # go through each item in the above array, if it contains keyword: check if it already contains correction
   # if it already contains correction, pass, else: add correction infront of the first instance of keyword found
-    find ${A_TARGET_BAG_DIR} -type f \( -iname "*$keyword*" \) | while read line;
-    do
-        if [[ "$line" != "*$correction*" ]]; then
-            newFileName=${line/$keyword/${correction}${keyword}}
-            echo "'$keyword' Keyword found in $line, adding '$correction'"
-            mv $line $newFileName
-            echo "New File Name: $newFileName"
-        else
-            echo "$line already contains $correction, not renaming."
-        fi
-    done
-    echo "==================================="
+    if [[ "$keyword" == "beet_" ]]; then
+
+        find ${A_TARGET_BAG_DIR} -type f \( -iname *"beet"* -and -not -iname *"sugarbeet"*  \) | while read line;
+        do
+            if [[ "$line" != *"$correction"* ]]; then
+                newFileName=${line/$keyword/${correction}${keyword}}
+                echo "'$keyword' Keyword found in $line, adding '$correction'"
+                mv $line $newFileName
+                echo "New File Name: $newFileName"
+            else
+                echo "$line already contains $correction, not renaming."
+            fi
+        done
+        echo "==================================="
+    else
+        find ${A_TARGET_BAG_DIR} -type f \( -iname *"$keyword"* \) | while read line;
+        do
+            if [[ "$line" != *"$correction"* ]]; then
+                newFileName=${line/$keyword/${correction}${keyword}}
+                echo "'$keyword' Keyword found in $line, adding '$correction'"
+                mv $line $newFileName
+                echo "New File Name: $newFileName"
+            else
+                echo "$line already contains $correction, not renaming."
+            fi
+        done
+        echo "==================================="
+    fi
     ((index++))
 done
 
-removalArray=("none_" "leak_" "beet_") #ONLY REMOVE BEET_ IF THERE ISN'T SUGAR INFRONT OF IT
+removalArray=("none_" "leak_" "_beet") #ONLY REMOVE BEET_ IF THERE ISN'T SUGAR INFRONT OF IT
 # if there's any instances of any items in removalArray in the filename, remove them.
 # If it finds an instance of "beet_", only remove it if it's not got sugar preceeding it.. BUG
 # don't add instances of sugarbeet when beet_ is already preceeded by sugar.
 # don't remove instances of beet_ if it is preceeded by sugar <--- PERFECT SOLUTION
 # My solution is imperfect, it will only get rid of instances of _beet_ | this won't work correctly when filename starts with "beet_frognall_pearce_RGB.bag"
 for keyword in ${removalArray[@]}; do 
-    find ${A_TARGET_BAG_DIR} -type f \( -iname "*${keyword}*" \) | while read line;
+    find ${A_TARGET_BAG_DIR} -type f \( -iname *"${keyword}"* \) | while read line;
     do 
         newFileName=${line//${keyword}/}
         echo "'${keyword}' keyword found in $line, Removing.."
         mv $line $newFileName
     done
 done
+
+
+
 
 }
 

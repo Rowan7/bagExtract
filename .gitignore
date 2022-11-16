@@ -2,5 +2,5 @@ bags/
 sorted/ 
 
 bags/ 
-.vscode
+.vscode/
 *.bag

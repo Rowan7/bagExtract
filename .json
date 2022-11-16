@@ -1,11 +1,16 @@
 {
   "attributes": {
-    "bagAttributes": null,
-    "cameraAngle": 1.0292075872421265,
-    "cameraHeight": 1.0292075872421265,
-    "planeUnitVecX": 0.0005596481496468186,
-    "planeUnitVecY": 0.01795337162911892,
-    "planeUnitVecZ": -0.999838650226593,
+    "bagAttributes": {
+      "Crop": "Springwheat",
+      "Format": "RGBIRD",
+      "Location": "NewfieldPapley",
+      "dateCreated": "2021-04-17-20-19-27"
+    },
+    "cameraAngle": 54.22566604614258,
+    "cameraHeight": 0.9264655709266663,
+    "planeUnitVecX": 0.021104002371430397,
+    "planeUnitVecY": -0.8110512495040894,
+    "planeUnitVecZ": -0.5845943093299866,
     "renderHeight": 360,
     "renderMode": "PERSP",
     "renderWidth": 640
@@ -13,10 +18,10 @@
   "data": [],
   "metadata": {
     "Complete": false,
-    "Created": "2022-11-08 16:18:27",
+    "Created": "2022-11-14 12:29:25",
     "Height": "360",
     "Ignore": false,
-    "Modified": "2022-11-08 16:18:27",
+    "Modified": "2022-11-14 12:29:25",
     "User": "roboeye",
     "Width": "640",
     "unlabelled": true

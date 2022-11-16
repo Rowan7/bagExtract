@@ -19,9 +19,6 @@ attributeArray = ["Crop", "Location", "Format"]
 valueArray = []
 
 
-
-
-
 def main():
 
     try:

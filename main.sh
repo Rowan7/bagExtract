@@ -24,7 +24,11 @@ cd ~-
 errorPath=$A_TARGET_BAG_DIR/failed.txt
 errorFile=failed.txt
 TIMEOUT=5m # Max BagFile Extraction Time Limit
+errorPath=$A_TARGET_BAG_DIR/failed.txt
+errorFile=failed.txt
+TIMEOUT=5m # Max BagFile Extraction Time Limit
 SUCCESS=0
+FAILURE=1
 FAILURE=1
 TIMEDOUT=125
 
@@ -35,11 +39,19 @@ $A_PROGRAM_HOME/formatBags.sh $_A_TARGET_BAG_DIR
 }
 
 jsonPopulate() {
+formatBags() {
+# Format bags and tidy them up before they are used elsewhere.
+$A_PROGRAM_HOME/formatBags.sh $_A_TARGET_BAG_DIR
+}
+
+jsonPopulate() {
 # Populate with .json files and add key values for each detected attribute.
 $A_PROGRAM_HOME/jsonPopulate.sh $A_TARGET_BAG_DIR
 }
+}
 
 
+extract() {
 extract() {
 # go through each .jsonFile .bagFile pair and if it's not missing any attributes, create it a path to be stored.
 for jsonPathName in $A_TARGET_BAG_DIR/*json; do
@@ -49,12 +61,16 @@ for jsonPathName in $A_TARGET_BAG_DIR/*json; do
     if [ -f $A_TARGET_BAG_DIR/$bagFile ]; then
         if  $(! grep -q $bagFile $errorPath)  ; then
             #echo "Complete bagFile/jsonFile Pair Found: ${bagFile%.bag}"
+            #echo "Complete bagFile/jsonFile Pair Found: ${bagFile%.bag}"
             getRouteReturn=$(python3 $A_PROGRAM_HOME/getRoute.py $jsonPathName $A_ROUTE_ROOT)
             if [[ $getRouteReturn == *"ERROR"* ]]; then
                 echo "Error found in getRoute, skipping .bag Extraction"
             else
                 #echo "Formatting Master Path"
+                #echo "Formatting Master Path"
                 MASTER_PATH=${getRouteReturn##*MASTER_PATH: }
+                #echo " Bag file path: ${bagPathName} save path: ${MASTER_PATH}"
+                networkInputReturn=$(timeout --foreground -k 10 ${TIMEOUT} /home/Garford_RoboEye/build/projects/networkInput/./networkInput -b ${bagPathName} -x ${MASTER_PATH})
                 #echo " Bag file path: ${bagPathName} save path: ${MASTER_PATH}"
                 #networkInputReturn=$(timeout --foreground -k 10 ${TIMEOUT} /home/Garford_RoboEye/build/projects/networkInput/./networkInput -b ${bagPathName} -x ${MASTER_PATH})
                 if [ "$?" -eq "$SUCCESS" ]; then
@@ -63,7 +79,12 @@ for jsonPathName in $A_TARGET_BAG_DIR/*json; do
                     echo "ERROR: Processing bagFile: ${bagFile} FAILED! OUTPUT: $?"
                     echo "Failed to Extract: ${bagFile##*/}" >> "$errorPath" # Add to Error File
                 else 
+                elif [ "$?" -eq "$FAILURE" ]; then 
+                    echo "ERROR: Processing bagFile: ${bagFile} FAILED! OUTPUT: $?"
+                    echo "Failed to Extract: ${bagFile##*/}" >> "$errorPath" # Add to Error File
+                else 
                     echo "STATUS: Processing bagFile: ${bagFile} TIMED OUT (Timeout Limit Reached: ${TIMEOUT} Minutes)"
+                    echo "Failed to Extract: ${bagFile##*/}, Timed Out" >> "$errorPath" # ADD TO FAILED.TXT TIMEOUT
                     echo "Failed to Extract: ${bagFile##*/}, Timed Out" >> "$errorPath" # ADD TO FAILED.TXT TIMEOUT
                 fi
             fi
@@ -72,9 +93,19 @@ for jsonPathName in $A_TARGET_BAG_DIR/*json; do
         fi
     else
         echo "$jsonFile found without matching bagFile, skipping skipping path creation."
+    else
+        echo "$jsonFile found without matching bagFile, skipping skipping path creation."
     fi
 
+
 done
+echo "FILE EXTRACTION COMPLETE"
+}
+
+formatBags
+jsonPopulate
+extract
+
 echo "FILE EXTRACTION COMPLETE"
 }
 

@@ -39,6 +39,8 @@ A_PROGRAM_HOME=`pwd`
 errorFile="failed.txt"
 
 r_TARGET_BAG_DIR=$1
+
+
 A_TARGET_BAG_DIR=$(realpath ${r_TARGET_BAG_DIR})
 
 errorPath="${A_TARGET_BAG_DIR}/${errorFile}"   # Write to the relevent error file

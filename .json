@@ -4,13 +4,13 @@
       "Crop": "Sugarbeet",
       "Format": "RGBIRD",
       "Location": "Frognall",
-      "dateCreated": "2021-07-28-18-06-57"
+      "dateCreated": "2021-07-28-18-16-13"
     },
-    "cameraAngle": 2.221881151199341,
-    "cameraHeight": 1.0638631582260132,
-    "planeUnitVecX": 0.038730766624212265,
-    "planeUnitVecY": -0.0017308463575318456,
-    "planeUnitVecZ": -0.999248206615448,
+    "cameraAngle": 0.0,
+    "cameraHeight": 65.53500366210938,
+    "planeUnitVecX": 0.0,
+    "planeUnitVecY": 0.0,
+    "planeUnitVecZ": -1.0,
     "renderHeight": 360,
     "renderMode": "PERSP",
     "renderWidth": 640
@@ -18,10 +18,10 @@
   "data": [],
   "metadata": {
     "Complete": false,
-    "Created": "2022-11-17 09:10:58",
+    "Created": "2022-11-17 10:18:43",
     "Height": "360",
     "Ignore": false,
-    "Modified": "2022-11-17 09:10:58",
+    "Modified": "2022-11-17 10:18:43",
     "User": "roboeye",
     "Width": "640",
     "unlabelled": true

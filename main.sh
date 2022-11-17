@@ -56,7 +56,7 @@ for jsonPathName in $A_TARGET_BAG_DIR/*json; do
                 echo "Formatting Master Path"
                 MASTER_PATH=${getRouteReturn##*MASTER_PATH: }
                 echo " Bag file path: ${bagPathName} save path: ${MASTER_PATH}"
-                #networkInputReturn=$(timeout --foreground -k 10 ${TIMEOUT} /home/Garford_RoboEye/build/projects/networkInput/./networkInput -b ${bagPathName} -x ${MASTER_PATH} -m "INROW")
+                networkInputReturn=$(timeout --foreground -k 10 ${TIMEOUT} /home/Garford_RoboEye/build/projects/networkInput/./networkInput -b ${bagPathName} -x ${MASTER_PATH} -m "INROW")
                 if [ "$?" -eq "$SUCCESS" ]; then
                     echo "STATUS: Processing bagFile: ${bagFile} SUCCESS"
                 elif [ "$?" -eq "$FAILURE" ]; then 

@@ -15,14 +15,14 @@
 #=== Initial Variables and arrays # Used for clearer navigation.
 attributeArray=("Crop" "Location" "Format") # Array of all attributes collected in each bag file Except from dateCreated as this doesn't involve keywords
 
-arrayCrop=("Beet" "Celery" "Springwheat" "Wheat" \ 
+arrayCrop=("Celery" "Springwheat" "Wheat" \ 
 "Barley" "Springbean" "Sugarbeet" "Lettuce" "Spinach" \
 "OilseedRape" "Rape" "Onion" "Brocolli" "Carrot" \ 
 "Chicory" "Springbeans" \
 "Spring_Greens" \
 "Choy" "Fennel" "Lavender" "Leek" "Spinach" "Cabbage")
 
-arrayLocation=("Pearce" "Lincoln" "SantaMaria" \
+arrayLocation=("Lincoln" "SantaMaria" \
                 "Papley" "Benefield" \
                 "Tansor" "Culverthorpe" \ 
                 "Maxey" \
@@ -47,7 +47,7 @@ errorPath="${A_TARGET_BAG_DIR}/${errorFile}"   # Write to the relevent error fil
 > $errorPath
 
 for bagFile in ${A_TARGET_BAG_DIR}/*bag; do    # For each bagFile in target directory
-    #echo "Bag file: ${bagFile} "
+    echo "Bag file: ${bagFile} "
     for attribute in ${attributeArray[@]}; do # Go through each attribute in attribute array, which holds arrays of arrays
         currentArray=array$attribute[@]
         found=0     # Missing Flag

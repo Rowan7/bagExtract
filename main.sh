@@ -31,7 +31,7 @@ TIMEDOUT=125
 
 formatBags() {
 # Format bags and tidy them up before they are used elsewhere.
-$A_PROGRAM_HOME/formatBags.sh $_A_TARGET_BAG_DIR
+$A_PROGRAM_HOME/formatBags.sh $A_TARGET_BAG_DIR
 }
 
 jsonPopulate() {
@@ -48,15 +48,15 @@ for jsonPathName in $A_TARGET_BAG_DIR/*json; do
     jsonFile=$(basename ${jsonPathName})
     if [ -f $A_TARGET_BAG_DIR/$bagFile ]; then
         if  $(! grep -q $bagFile $errorPath)  ; then
-            #echo "Complete bagFile/jsonFile Pair Found: ${bagFile%.bag}"
+            echo "Complete bagFile/jsonFile Pair Found: ${bagFile%.bag}"
             getRouteReturn=$(python3 $A_PROGRAM_HOME/getRoute.py $jsonPathName $A_ROUTE_ROOT)
             if [[ $getRouteReturn == *"ERROR"* ]]; then
                 echo "Error found in getRoute, skipping .bag Extraction"
             else
-                #echo "Formatting Master Path"
+                echo "Formatting Master Path"
                 MASTER_PATH=${getRouteReturn##*MASTER_PATH: }
-                #echo " Bag file path: ${bagPathName} save path: ${MASTER_PATH}"
-                networkInputReturn=$(timeout --foreground -k 10 ${TIMEOUT} /home/Garford_RoboEye/build/projects/networkInput/./networkInput -b ${bagPathName} -x ${MASTER_PATH})
+                echo " Bag file path: ${bagPathName} save path: ${MASTER_PATH}"
+                #networkInputReturn=$(timeout --foreground -k 10 ${TIMEOUT} /home/Garford_RoboEye/build/projects/networkInput/./networkInput -b ${bagPathName} -x ${MASTER_PATH} -m "INROW")
                 if [ "$?" -eq "$SUCCESS" ]; then
                     echo "STATUS: Processing bagFile: ${bagFile} SUCCESS"
                 elif [ "$?" -eq "$FAILURE" ]; then 

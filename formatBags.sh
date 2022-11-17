@@ -21,7 +21,8 @@
 
 A_PROGRAM_HOME=`pwd`
 r_TARGET_BAG_DIR=$1
-A_TARGET_BAG_DIR=$(realpath ${r_TARGET_BAG_DIR})
+echo $r_TARGET_BAG_DIR
+A_TARGET_BAG_DIR=$( realpath ${r_TARGET_BAG_DIR} )
 
 
 
@@ -51,27 +52,17 @@ for keyword in ${!keywordCorrection[@]}; do # For keyword in the associated arra
 
   # go through each item in the above array, if it contains keyword: check if it already contains correction
   # if it already contains correction, pass, else: add correction infront of the first instance of keyword found
-    if [[ "$keyword" == "beet_" ]]; then # Specifically if the keyword we're currently on is beet:
-        find ${A_TARGET_BAG_DIR} -type f \( -iname *"beet"* -and -not -iname *"sugarbeet"*  \) | while read line; # We want to also check there's no instances of sugarbeet
-        do
-            if [[ "$line" != *"$correction"* ]]; then # Check if you've already corrected the keyword
-                newFileName=${line/$keyword/${correction}${keyword}}
-                echo "'$keyword' Keyword found in $line, adding '$correction'"
-                mv $line $newFileName #Rename it
-                echo "New File Name: $newFileName"
-            fi
-        done
-    else
-        find ${A_TARGET_BAG_DIR} -type f \( -iname *"$keyword"* \) | while read line;
-        do
-            if [[ "$line" != *"$correction"* ]]; then
-                newFileName=${line/$keyword/${correction}${keyword}}
-                echo "'$keyword' Keyword found and $correction not already found in $line, adding '$correction'"
-                mv $line $newFileName
-                echo "New File Name: $newFileName"
-            fi
-        done
-    fi
+
+    find ${A_TARGET_BAG_DIR} -type f \( -iname *"$keyword"* -and -not -iname *"$correction"*  \) | while read line; # We want to also check there's no instances of sugarbeet
+    do
+
+            newFileName=${line/$keyword/${correction}${keyword}}
+            echo "'$keyword' Keyword found in $line, adding '$correction'"
+            mv $line $newFileName #Rename it
+            echo "New File Name: $newFileName"
+
+    done
+
     #echo ""
     ((index++))
 done

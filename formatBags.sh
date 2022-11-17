@@ -5,9 +5,11 @@
 # Current Cleanup:
 # Replace all instances of "beet_" with "sugarbeet_"
 # Replace all instances of "leak_" with "leek_"
+# Replace all instances of "letuce_" with "lettuce_"
 # Replace all instances of "none_none_auto_none" with "wheat_papley"
 #
 # Place "ely_" infront of all instances of "gs_"
+# Place "ely_" infront of all instances of "engine_farm"
 # Place "frognall_" infront of all instances of "pearce_"
 # Place "frognall_" infront of all instances of "peasgood_"
 # 
@@ -37,8 +39,10 @@ declare -A keywordCorrection=( # Declare an associative array containing known k
     ["pearce_"]="frognall_" \
     ["peasgood_"]="frognall_" \
     ["gs_"]="ely_" \
+    ["engine_farm"]="ely_" \
     ["beet_"]="sugarbeet_" \
     ["leak_"]="leek_" \
+    ["letuce_"]="lettuce_" \
     ["none_none_auto_none_"]="wheat_papley_" \
 )
 # Add each correction in front of keyword, then delete all necessary keywords afterwards in seperate loop (this is because some keywords don't want replacing e.g pearce, but delete all misspellings of leek.)

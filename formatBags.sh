@@ -44,6 +44,9 @@ declare -A keywordCorrection=( # Declare an associative array containing known k
     ["leak_"]="leek_" \
     ["letuce_"]="lettuce_" \
     ["none_none_auto_none_"]="wheat_papley_" \
+    ["RGBIRD2"]="_RGBIRD_" \
+
+
 )
 # Add each correction in front of keyword, then delete all necessary keywords afterwards in seperate loop (this is because some keywords don't want replacing e.g pearce, but delete all misspellings of leek.)
 index=0
@@ -71,7 +74,7 @@ for keyword in ${!keywordCorrection[@]}; do # For keyword in the associated arra
     ((index++))
 done
 
-removalArray=("_none" "none_" "_leak" "_letuce" "_beet") 
+removalArray=("_none" "none_" "_leak" "_letuce" "_beet" "RGBIRD2") 
 # if there's any instances of any items in removalArray in the filename, remove them.
 # Remove the underscore befor eit as there will ALWAYS be items before it unless the item starts with none_.
 

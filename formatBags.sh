@@ -45,6 +45,7 @@ declare -A keywordCorrection=( # Declare an associative array containing known k
     ["letuce_"]="lettuce_" \
     ["none_none_auto_none_"]="wheat_papley_" \
     ["RGBIRD2"]="_RGBIRD_" \
+    
 
 
 )

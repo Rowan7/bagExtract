@@ -10,7 +10,7 @@
 # USAGE HELP:          ./main.sh bagDirectory routeRoot
 # USAGE EXAMPLE:       /main.sh ../bags ../sorted
 #
-
+# ./main.sh /home/In-Row-Bags/sugarbeet-pearce-23/ /home/In-Row-Bags/In-Row-Images/extractedBags
 A_PROGRAM_HOME=`pwd`
 
 r_TARGET_BAG_DIR=$1

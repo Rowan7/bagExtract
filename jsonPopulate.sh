@@ -20,20 +20,20 @@ arrayCrop=("Celery" "Springwheat" "Wheat" \
 "OilseedRape" "Rape" "Onion" "Brocolli" "Carrot" \ 
 "Chicory" "Springbeans" \
 "Spring_Greens" \
-"Choy" "Fennel" "Lavender" "Leek" "Spinach" "Cabbage")
+"Choy" "Fennel" "Lavender" "Leek" "Spinach" "Cabbage" "GreenBrassica")
 
 arrayLocation=("Lincoln" "SantaMaria" \
                 "Papley" "Benefield" \
                 "Tansor" "Culverthorpe" \ 
                 "Maxey" \
                 "Ely" \
-
+                "pearceTestPlot" \
                 "Boston" \
                 "Lutton" \
                 "Oundle" \
                 "Frognall" "Valensole" )
 
-arrayFormat=("_RGB_" "_RGBD_" "_IRD_" "_RGBIRD_")
+arrayFormat=("_RGB_" "_RGBD_" "_IRD_" "_RGBIRD_" "_RGBNDI_")
 
 A_PROGRAM_HOME=`pwd`
 errorFile="failed.txt"

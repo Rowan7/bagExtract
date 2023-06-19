@@ -46,7 +46,7 @@ A_TARGET_BAG_DIR=$(realpath ${r_TARGET_BAG_DIR})
 errorPath="${A_TARGET_BAG_DIR}/${errorFile}"   # Write to the relevent error file
 > $errorPath
 
-for bagFile in ${A_TARGET_BAG_DIR}/*bag; do    # For each bagFile in target directory
+for bagFile in ${A_TARGET_BAG_DIR}/*json; do    # For each bagFile in target directory
     echo "Bag file: ${bagFile} "
     for attribute in ${attributeArray[@]}; do # Go through each attribute in attribute array, which holds arrays of arrays
         currentArray=array$attribute[@]
@@ -67,8 +67,10 @@ for bagFile in ${A_TARGET_BAG_DIR}/*bag; do    # For each bagFile in target dire
     epochTime=` date -r $A_TARGET_BAG_DIR/${bagFile##*/} "+%s"`                                                # After adding the rest of the key value pairs, it adds the date it was created    
     epochToUTC=` date --utc --date "1970-01-01 $epochTime seconds" +"%Y-%m-%d-%H-%M-%S"`     # I think this has to be hardcoded at the end because you can't hold all the dates in an array.
 
-    bagFileName=${bagFile##*/}   
-    keywordCount=$(python3 $A_PROGRAM_HOME/addKeyValue.py $A_TARGET_BAG_DIR/${bagFileName} "dateCreated" $epochToUTC)      
+    bagFileName=${bagFile##*/} 
+
+    python3 $A_PROGRAM_HOME/addKeyValue.py $A_TARGET_BAG_DIR/${bagFileName} "dateCreated" $epochToUTC
+
 done
 
 

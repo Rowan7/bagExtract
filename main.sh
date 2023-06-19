@@ -78,8 +78,8 @@ done
 echo "FILE EXTRACTION COMPLETE"
 }
 
-formatBags
+#formatBags
 jsonPopulate
-extract
+#extract
 
 

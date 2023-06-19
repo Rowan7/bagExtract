@@ -82,16 +82,25 @@ def printJSON(A_bagPath, target):
     jsonFile.close()
 
 def writeJSON(target, key, value):
-    try:   
+    try:
+        #print("Executing writeJSON function")   
         file = open(target, 'r')
         data = json.load(file)
         file.close()
-        newData = {key: value}
-        data.update(newData)
+        if data["attributes"]["bagAttributes"] == None:
+            print ("True")
+            data["attributes"]["bagAttributes"] = {}
+        else:
+            print("False")
+        data["attributes"]["bagAttributes"][key] = value
+        #newData = {key: value}
+        #print (newData)
+        #data.update(newData)
+
         file = open(target, 'w')
         json.dump(data, file, indent=2)
         file.close()
-        print ("Key: " + key + " has been added with value: "+ value + " in: " + target) 
+        #print ("Key: " + key + " has been added with value: "+ value + " in: " + target) 
         return 1
     except FileExistsError as e:
         print ("Error, Unable to write to: {} err: {}".format(target, e)) 
@@ -121,7 +130,7 @@ def checkKeyExist(A_bagPath, target, key): # does the input key already exist in
 # 5: .bagFile Found, .json Found, Existing Key Found, Existing Key is null; auto overwritten irrelevent of Force modifier.
 
 def main(A_bagPath, bagName, target, key, value, modifier):
-   
+    #print ("Running addKeyValue function")
     try:
         os.chdir(A_bagPath) 
     except FileNotFoundError as e: 
@@ -159,8 +168,10 @@ def main(A_bagPath, bagName, target, key, value, modifier):
         print ("Key: " + key + " already found in " + target + " with value: null; Overwriting..") 
         writeJSON(target, key, value)
         return 5
+    
+
 
 if __name__ == "__main__":
-    
     A_bagPath, bagName, target, key, value, modifier = parseCMDArgs()
-    main(A_bagPath, bagName, target, key, value, modifier)
+    returnValue = main(A_bagPath, bagName, target, key, value, modifier)
+    #print (returnValue)

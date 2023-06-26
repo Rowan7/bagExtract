@@ -21,7 +21,7 @@ def parse_values(attributes: dict) -> list[str]:
     values = []
     for attribute in ATTRIBUTES:
         try:
-            value = str(attributes[attribute])
+            value = str(attributes['attributes']['bagAttributes'][attribute])
             values.append(value)
         except KeyError as e:
             raise KeyError(f'ERROR: No {attribute} Key Value Pair Found. Err: {e}')

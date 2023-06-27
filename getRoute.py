@@ -1,4 +1,3 @@
-#!/usr/bin/python
 import sys
 import os
 import json
@@ -15,61 +14,70 @@ import json
 #
 #
 
-attributeArray = ["Crop", "Location", "Format"]
-valueArray = []
+ATTRIBUTES = ['Crop', 'Location', 'Format']
+
+
+def parse_values(attributes: dict) -> list[str]:
+    values = []
+    for attribute in ATTRIBUTES:
+        try:
+            value = str(attributes['attributes']['bagAttributes'][attribute])
+            values.append(value)
+        except KeyError as e:
+            raise KeyError(f'ERROR: No {attribute} Key Value Pair Found. Err: {e}')
+
+    return values
+
+
+def generate_master_path(attribute_values: list[str], json_base_name: str) -> str:
+    path = '/'.join(attribute_values)
+    path = f'{path}/{json_base_name}'
+    return path
+
+
+def load_json(path: str) -> dict:
+    try:
+        with open(path, 'r') as json_file:
+            return json.load(json_file)
+    except Exception as e:
+        raise NameError(f'ERROR: {e} Cannot Locate Path of .jsonFile')  # Cannot go to path and open .json file
 
 
 def main():
-
     try:
-        str; jsonPathName = sys.argv[1]
-        str; A_PROGRAM_HOME = os.getcwd()
-        str; A_jsonPathName = os.path.abspath(jsonPathName) # If user gives relative path, convert it to absolute path and use that.
-        str; A_jsonPath = os.path.split(A_jsonPathName)[0]  # Separate bagfile.bag from path               
-        str; jsonName = os.path.split(A_jsonPathName)[1]
-        str; jsonBaseName = os.path.splitext(jsonName)[0]
-        str; r_ROUTE_ROOT = sys.argv[2]
-        str; A_ROUTE_ROOT = os.path.abspath(r_ROUTE_ROOT)
+        json_path_name = sys.argv[1]
+        absolute_json_path_name = os.path.abspath(json_path_name)  # If user gives relative path, convert it to absolute path and use that.
+        absolute_json_path = os.path.split(absolute_json_path_name)[0]  # Separate bagfile.bag from path
+        json_name = os.path.split(absolute_json_path_name)[1]
+        json_base_name = os.path.splitext(json_name)[0]
+        relative_route_root = sys.argv[2]
+        absolute_route_root = os.path.abspath(relative_route_root)
+    except Exception as e:
+        raise KeyError(f'ERROR: {e} Incorrect Usage, please see USAGE.')
 
-    except:
-        raise KeyError("ERROR: Incorrect Usage, please see USAGE.")
-    try:                                                     # PUT TRY AND EXCEPT CATCHES IN HERE
-        os.chdir(A_jsonPath)
-        jsonFile = open(jsonName)
-        contents = json.load(jsonFile)
-        jsonFile.close()
-    except:
-        raise NameError("ERROR: Cannot Locate Path of .jsonFile") #Cannot go to path and open .jsonFile
+    contents = load_json(os.path.join(absolute_json_path, json_name))
 
-    try: # Catch if any attributes are missing / misspelt
-        for attribute in attributeArray: 
-            try:
-                str; value = str(contents[attribute])
-                valueArray.append(value)
-            except KeyError as e:
-                raise KeyError("ERROR: No " + attribute + " Key Value Pair Found. Err: {}".format(e))
+    try:  # Catch if any attributes are missing / misspelt
+        attribute_values = parse_values(contents)
 
-
-    ## If nothing was caught
-        print ("Successfully found all Key Values")
-        str; MASTER_PATH = ""
-        MASTER_PATH ="/".join(valueArray)                                                               
-        MASTER_PATH=MASTER_PATH+"/"+jsonBaseName        # Fixed bug, now adds the .bagName as a directory too
+        print('Successfully found all Key Values')
+        master_path = generate_master_path(attribute_values, json_base_name)
 
         try:
-            os.chdir(A_ROUTE_ROOT)
-            os.makedirs(MASTER_PATH)
+            os.chdir(absolute_route_root)
+            os.makedirs(master_path)
         except FileExistsError:
-            print ("Successfully Located Existing Path: " + MASTER_PATH)
+            print('Successfully Located Existing Path: ' + master_path)
         else:
-            print ("Path Created: " + MASTER_PATH)
+            print('Path Created: ' + master_path)
 
-        print ("MASTER_PATH: " + A_ROUTE_ROOT + "/" + MASTER_PATH)
-
+        print('MASTER_PATH: ' + absolute_route_root + '/' + master_path)
 
     except KeyError as e:
-        print("ERROR WARNING: Cannot create path. Missing attributes. Err: {}".format(e)) 
-    except Exception as e: 
-        raise RuntimeError("FATAL ERROR: Cannot Make MASTER PATH. Err: {}".format(e))
+        print(f'ERROR WARNING: Cannot create path. Missing attributes. Err: {e}')
+    except Exception as e:
+        raise RuntimeError(f'FATAL ERROR: Cannot Make MASTER PATH. Err: {e}')
 
-main()
+
+if __name__ == '__main__':
+    main()
